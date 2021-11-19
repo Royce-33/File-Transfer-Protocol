@@ -2,7 +2,7 @@ import javax.swing.JFrame;
 
 /**
  *
- * @author Jake
+ * @author Jacob Cabral
  */
 public class sendergui extends javax.swing.JFrame {
 

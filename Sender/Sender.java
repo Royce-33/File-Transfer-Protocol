@@ -10,6 +10,12 @@ import java.net.InetAddress;
 import java.net.SocketTimeoutException;
 import java.net.DatagramPacket;
 
+/**
+ *
+ * @author Riley Adams
+ * @author Jacob Cabral
+ */
+
 public class Sender {
 
     sendergui gui;
@@ -17,9 +23,8 @@ public class Sender {
     public Sender(sendergui gui) {
         this.gui = gui;
     }
-    
+
     public static void main(String args[]) throws Exception{
-        
         
         /**
          * DatagramPacket objects need to be contsructed before being sent off to receiver
@@ -31,8 +36,6 @@ public class Sender {
         Sender sender = new Sender(gui);
         sender.gui.setVisible(true);
         
-        
-
     }
 
     /**
@@ -42,6 +45,7 @@ public class Sender {
      * @param data_port - Inputted UDP data port from GUI
      * @param filename - Inputted filename from GUI
      * @param timeout - Inputted timeout from from GUI
+     * 
      */
 
     public static String handleSendButtonPress(String receiver_address, String ack_port, String data_port, String filename, String timeout, sendergui gui) 
@@ -79,6 +83,16 @@ public class Sender {
 
     }
 
+
+    /**
+     * 
+     * @param receiver_address - Receiving application's IP address
+     * @param ack_port - UDP port number used for ACKs
+     * @param data_port - UDP port number used for data
+     * @param timeout - how long (in microseconds) the Sender will wait before resending packet
+     * @return result - String that indicates the status of the action
+     * @throws Exception
+     */
     public static String handleIsAliveButtonPress(String receiver_address, String ack_port, String data_port, String timeout)
         throws Exception {
 
@@ -109,13 +123,19 @@ public class Sender {
 
 
     /**
-     * Method that gets called once the SEND button is pressed on the GUI
-     * @param sendingFile - the file to be sent to the receiver
+     * 
+     * @param receiver_address - Receiving application's IP address
+     * @param ack_port - UDP port number used for ACKs
+     * @param data_port - UDP port number used for data
+     * @param sendingFile - File object that contains the data to be sent to receiving application
+     * @param timeout - how long (in microseconds) the Sender will wait before resending packet
+     * @param socket - DatagramSocket object used to send and recieve packets
+     * @param gui - Reference to sender's GUI so we can get selected options from GUI
+     * @throws Exception
      */
 
     public static void sendPackets(String receiver_address, int ack_port, int data_port, File sendingFile, int timeout, DatagramSocket socket, sendergui gui) throws Exception {
 
-        
         BufferedReader line = new BufferedReader( new FileReader(sendingFile) );
         int sequence_number = 0; //for making sure the packets are received in order
         InetAddress receiver_ip = InetAddress.getByName(receiver_address);
@@ -130,7 +150,6 @@ public class Sender {
 
         boolean eof = false;
         
-        
         //while we haven't reached the end of the file, create a DatagramPacket, and send it to the receiver, and wait for ack before sending next packet
         while (!eof) {
 
@@ -138,14 +157,9 @@ public class Sender {
 
             for (int i = 0; i < 7; i++) {
                 char curr_char = (char) line.read();
-                // System.out.println(curr_char);
-                
-                // int compare = Character.compare(curr_char, '?');
-                // System.out.println("Results of compare: " + String.valueOf(compare));
 
                 if (Character.compare(curr_char, '?') == 65472) { //in testing whatever char that it was filling when the while loop was going forever looked like a '?'
                     eof = true;                                   //but apparently isn't because of the weird difference value in the if above
-                    
                 }  
 
                 else {

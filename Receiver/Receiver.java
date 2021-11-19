@@ -13,6 +13,12 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.net.DatagramPacket;
 
+/**
+ *
+ * @author Riley Adams
+ * @author Jacob Cabral
+ */
+
 public class Receiver {
      static int seq = 0; //sequence number variable for sending packets
 
