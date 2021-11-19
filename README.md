@@ -38,7 +38,7 @@ Located in the Receiver file structure, it is a command-line application that re
 
 Command to run it in command-line looks like the following:
 
-"java Receiver Sender_IP UDP_Port_Number UDP_Port_Number filename"  
+"java Receiver Sender_IPv4 UDP_Port_Number UDP_Port_Number filename"  
 
 The first UDP port is the port the receiver uses to receive data, the second is the port used by the sender to recieve acknowledgements. The filename is the name of the file the received data will be stored in, usually .txt files.
 
@@ -47,3 +47,13 @@ The first UDP port is the port the receiver uses to receive data, the second is 
 
 For example:
 
+![ScreenShot](Resources/Receiver%20sample%20output.png)
+
+**Note**: The number at the end of the received data in the output, is the sequence number of the current packet.
+
+## Authors
+* **Riley Adams**
+* **Jacob Cabral**
+
+## Licence
+See the LICENSE file for details.
