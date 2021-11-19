@@ -78,33 +78,25 @@ public class Receiver {
                 System.out.println("Received packet");
                 
                 String substring = write.substring(0, write.length() - 1);                    
-                if(Integer.parseInt(write.substring(write.length() -1)) == seq) {
-                    
+                
+                if (Integer.parseInt(write.substring(write.length() -1)) == seq) {
                     
                     if ( !write.equals("end") ) {
                             
-                        
-                        
-
                         if (!substring.equals("alive?")) {
                             
                             write = write.substring(0, write.length()-1);
                     
                             bw.write(write);
                         }
-
-                        
                     }
-
-                       
                     
-    
                     packet = new DatagramPacket(buf,buf.length,senderaddress,i_ackport);
                     String receive = new String(packet.getData(), 0, packet.getLength());
     
                     System.out.println("Received data: " + receive);
     
-                    if(write.equals("end")){
+                    if (write.equals("end")){
                         is_running = false;
                         continue;
                     }
@@ -123,8 +115,6 @@ public class Receiver {
                         }
                     }
 
-
-                    
                 }
    
             }
