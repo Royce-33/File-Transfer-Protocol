@@ -39,13 +39,13 @@ public class Sender {
     }
 
     /**
-     * 
+     * Function that gets called when the "SEND" button is pressed on the GUI
      * @param receiver_address - Inputted IP address for receiver from GUI
      * @param ack_port - Inputted UDP ACK port from GUI
      * @param data_port - Inputted UDP data port from GUI
      * @param filename - Inputted filename from GUI
      * @param timeout - Inputted timeout from from GUI
-     * 
+     * @param gui - Reference to sender's GUI object to get inputs from the appropriate fields in the GUI
      */
 
     public static String handleSendButtonPress(String receiver_address, String ack_port, String data_port, String filename, String timeout, sendergui gui) 
@@ -85,7 +85,7 @@ public class Sender {
 
 
     /**
-     * 
+     * Function that gets called when the "ISALIVE?" button is pressed on the GUI
      * @param receiver_address - Receiving application's IP address
      * @param ack_port - UDP port number used for ACKs
      * @param data_port - UDP port number used for data
@@ -123,7 +123,8 @@ public class Sender {
 
 
     /**
-     * 
+     * Function that sends packets created from data in the sendingFile to the given receiver_address
+     * using the data_port and socket DatagramSocket 
      * @param receiver_address - Receiving application's IP address
      * @param ack_port - UDP port number used for ACKs
      * @param data_port - UDP port number used for data
@@ -160,27 +161,25 @@ public class Sender {
 
                 if (Character.compare(curr_char, '?') == 65472) { //in testing whatever char that it was filling when the while loop was going forever looked like a '?'
                     eof = true;                                   //but apparently isn't because of the weird difference value in the if above
-                }  
+                }                                                 //65472 is the magic number that makes it work
 
                 else {
                     data += curr_char;
                 }
                               
-         
             }
 
             if (sequence_number == 0) {
                 data += "0";
                 sequence_number = 1;
-                
             }
 
             else {
                 data += "1";
                 sequence_number = 0;
-                
             }
 
+            //this if-block simulates the unreliable sending
             if (unreliable && (gui.packets_sent % 10 == 0)) { //if sender is set to unreliable and we are on the tenth packet
 
                 socket.setSoTimeout(timeout / 1000); //setting timeout for receive (input is in microseconds, need to convert to milliseconds so we divide by 1000)
@@ -210,6 +209,7 @@ public class Sender {
 
             }
 
+            //this else-block is for reliable sending
             else {
 
                 DatagramPacket packet = new DatagramPacket(data.getBytes(), data.length(), receiver_ip, data_port);
@@ -240,7 +240,6 @@ public class Sender {
             }
 
             System.out.println("Ack received");
-
         }
 
         String end_of_transmission = "end" + sequence_number;
@@ -249,9 +248,17 @@ public class Sender {
         System.out.println("Sent end of transmission packet");
 
         line.close();
-
     }
 
+    /**
+     * 
+     * @param receiver_address - Receiving application's IP address
+     * @param ack_port - UDP port number used for ACKs
+     * @param data_port - UDP port number used for data
+     * @param timeout - how long (in microseconds) the Sender will wait before resending packet
+     * @param ack_socket - DatagramSocket object used to send and recieve DatagramPackets
+     * @throws Exception
+     */
     public static void sendIsAlivePacket(String receiver_address, int ack_port, int data_port, int timeout, DatagramSocket ack_socket) throws Exception {
 
         //works similar to send packet except it sends a prebuilt is alive packet
