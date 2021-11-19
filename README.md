@@ -24,3 +24,26 @@ Located in the Sender file structure, the Sender application has a basic GUI mad
   * Counter that updates whenever a packet is successfully sent to the receiving application
 * Textbox in the bottom left:
   * Status box that displays the results of the Sender's actions when either "ISALIVE?" or "SEND" is pressed
+
+### Buttons
+
+#### "ISALIVE?" Button
+When pressed, sends a packet to check the status of the receiving application, and displays the results in the status box in the bottom left of the GUI.
+
+#### "SEND" Button
+When pressed, reads through the given file, creates packets of size 8 bytes, and sends those packets in-order following **Stop and Wait** protocol. If running in unreliable mode, every 10th packet is "dropped" and the Sender times out and resends the current packet.
+
+## Receiver Application
+Located in the Receiver file structure, it is a command-line application that receives packets from the Sender application. Everytime a packet is received and the appropriate acknowledgement back to the Sender application.
+
+Command to run it in command-line looks like the following:
+
+"java Receiver Sender_IP UDP_Port_Number UDP_Port_Number filename"  
+
+The first UDP port is the port the receiver uses to receive data, the second is the port used by the sender to recieve acknowledgements. The filename is the name of the file the received data will be stored in, usually .txt files.
+
+**Note**: The given file name does not have to exist when you run the receiver, if it does not exist, the application will create it in it's folder.
+
+
+For example:
+
